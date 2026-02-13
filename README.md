@@ -1,28 +1,57 @@
-# Industrial Defect Detection in Laser Cladding Process
+# Industrial Defect Detection – ML Feasibility Study
 
 ## Overview
-This repository presents a feasibility study of machine learning methods for early defect detection in an industrial laser cladding process used in engine head valve seat manufacturing.
+This repository presents a feasibility study of machine learning methods for early defect detection in an industrial manufacturing process based on time-series data.
 
-The primary objective of the project was to evaluate and compare different ML approaches for classifying time-series data derived from process measurements, with a focus on early detection of rare defects.
+The primary objective of the project was to evaluate and compare different ML approaches for classifying process-related time-series signals, with a focus on early detection of rare defects under real-world data constraints.  
+The project was designed as an end-to-end data and ML pipeline, covering data ingestion, storage, processing, modeling and visualization.
 
 ---
 
 ## Business Context
-Early identification of defects in manufacturing processes is critical to:
-- reduce production costs,
+Early identification of defects in industrial processes is critical to:
+- reduce operational costs,
 - minimize scrap and rework,
 - prevent costly downstream failures,
 - improve overall process reliability.
 
-This study investigates whether machine learning models can support these goals under real industrial data constraints.
+This study investigates whether machine learning models can support these goals when applied to realistic industrial data and integrated with modern data platforms.
 
 ---
 
-## Process Description
-The analyzed process is laser cladding of valve seats, including:
+## Process Context
+The analyzed system represents a generic industrial production process, including:
 - identification of key process parameters,
 - characterization of potential defect types,
-- analysis of available sensor signals recorded during production.
+- analysis of available sensor signals recorded during operation.
+
+The project intentionally abstracts from a specific process to focus on general challenges of industrial defect detection and data-driven decision support.
+
+---
+
+## Data Sources & Ingestion
+Raw process data was collected from operational systems and ingested into the analytical environment using a dedicated data ingestion pipeline:
+- original process data retrieved from FTP-based data sources,
+- batch-oriented ingestion of new data into a centralized data warehouse,
+- separation of raw, processed and analytical data layers.
+
+---
+
+## Data Engineering Architecture
+
+### Data Storage & Processing
+- Snowflake used as the central data warehouse for storing raw and processed time-series data
+- Data transformations and feature engineering implemented using Snowflake DataFrame API (compute Snowflake's layer)
+- Processed datasets written back to Snowflake for reuse by downstream analytics and ML workflows
+
+### Data Pipelines
+- Automated ingestion of newly available data batches
+- Reproducible data preprocessing and feature engineering pipelines
+- Clear separation between:
+  - data ingestion,
+  - data preparation,
+  - model training,
+  - model scoring
 
 ---
 
@@ -31,17 +60,16 @@ The project addressed several real-world industrial data issues:
 - highly imbalanced dataset with a very small number of defective samples,
 - noisy time-series sensor data,
 - limited number of recorded process parameters,
-- constraints on data volume and labeling.
+- constraints on data volume, data freshness and labeling.
 
 ---
 
 ## Methodology
 
-### Data Pipeline
-- Data acquisition from industrial process sources
-- Manual and semi-automated data labeling
-- Data cleaning and preprocessing
-- Feature engineering for time-series data
+### Data Preparation & Orchestration
+- Data preparation and experimentation workflows implemented using Dataiku
+- Rapid prototyping of feature engineering and ML pipelines
+- Integration of Dataiku workflows with Snowflake as the underlying data platform
 
 ### Machine Learning Models
 The following model architectures were implemented and evaluated:
@@ -62,45 +90,50 @@ The following model architectures were implemented and evaluated:
 ---
 
 ## Results
-- The GRU-based model achieved the highest performance in defect detection among the evaluated approaches.
-- Overall model effectiveness was limited by data quality and class imbalance rather than model architecture.
-- Deep learning models did not provide a decisive advantage without improvements in data collection strategy.
+- The GRU-based model achieved the highest performance among the evaluated approaches.
+- Overall model effectiveness was limited primarily by data quality and class imbalance rather than model architecture.
+- Increasing model complexity did not compensate for insufficient or noisy data.
 
 ---
 
 ## Visualization
-To support practical use and result interpretation, a dedicated visualization interface was implemented in the Ignition environment:
-- real-time visualization of process parameters,
-- display of classification results,
-- support for operational monitoring by production staff.
+To support practical interpretation of results, a dedicated visualization interface was implemented in an industrial visualization environment:
+- real-time visualization of incoming process signals,
+- display of classification and scoring results,
+- support for operational monitoring and analysis.
 
 ---
 
 ## Key Findings
-- Data quality and class imbalance are the dominant factors in industrial ML success.
-- Model complexity alone cannot compensate for insufficient or noisy data.
-- Early feasibility studies are essential before deploying ML systems in production environments.
+- Data quality and class imbalance are dominant factors in industrial ML success.
+- Reliable data engineering and data availability are prerequisites for effective ML models.
+- Model complexity alone cannot compensate for insufficient or poorly structured data.
+- Early feasibility studies are essential before deploying ML-based solutions in production environments.
 
 ---
 
 ## Conclusions and Future Work
-The study demonstrates that ML-based defect detection in industrial environments requires:
+The study demonstrates that ML-based defect detection in industrial settings requires:
+- robust and scalable data ingestion pipelines,
 - improved data acquisition strategies,
-- increased number of defective samples,
-- richer process parameterization.
+- increased availability of representative defect samples,
+- richer and more informative process parameterization.
 
-Future improvements may include enhanced sensor coverage, better labeling processes and hybrid approaches combining domain knowledge with data-driven models.
+Future improvements may include enhanced sensor coverage, improved labeling processes, stronger data validation and hybrid approaches combining domain knowledge with data-driven models.
 
 ---
 
 ## Tech Stack
 - Python
-- NumPy / Pandas
-- scikit-learn
-- XGBoost
-- TensorFlow / PyTorch
-- Optuna
-- Ignition (industrial visualization)
+  - NumPy & Pandas
+  - scikit-learn
+  - XGBoost
+  - PyTorch
+  - Optuna
+- Snowflake (data warehouse & compute layer)
+- Dataiku (data preparation and ML workflows)
+- FTP-based data ingestion
+- Industrial visualization platform
 
 ---
 
@@ -112,5 +145,5 @@ Code and experiments will be added incrementally.
 ---
 
 ## Disclaimer
-This project is a recreated demonstration based on an academic thesis.  
+This project is a recreated demonstration based on an academic master's thesis.  
 No proprietary company data, code or confidential information is included.
