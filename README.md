@@ -140,7 +140,6 @@ Future improvements may include enhanced sensor coverage, improved labeling proc
 ## Project Status
 🚧 Work in progress  
 This repository is a recreated demo based on a university thesis.  
-Code and experiments will be added incrementally.
 
 ---
 
